@@ -153,4 +153,47 @@ public class BoardTest {
 		}
 
 	}
+		@Test
+	public void ladder_steps() throws FileNotFoundException, UnsupportedEncodingException, IOException,
+			PlayerExistsException, GameInProgressException, MaxPlayersReachedExeption, InvalidTurnException {
+		board = new Board();
+		board.registerPlayer("User 1");
+		UUID uuid = null;
+		JSONArray player = new JSONArray();
+		player = board.getData().getJSONArray("players");
+		int c = player.length();
+		JSONObject objPlayer;
+
+		for (int i = 0; i < player.length(); i++) {
+			player = board.getData().getJSONArray("players");
+			objPlayer = player.getJSONObject(i);
+			uuid = (UUID) objPlayer.get("uuid");
+
+			JSONObject obj = board.rollDice(uuid);
+
+			int dice = (int) obj.get("dice");
+			System.out.println("dice is="+dice);
+
+			int position = (int) objPlayer.get("position");
+			if (obj.get("dice").equals(1)) {
+				assertThat(position).isEqualTo(7);
+			}
+			if (obj.get("dice").equals(2)) {
+				assertThat(position).isEqualTo(24);
+			}
+			if (obj.get("dice").equals(3)) {
+				assertThat(position).isEqualTo(8);
+			}
+			if (obj.get("dice").equals(4)) {
+				assertThat(position).isEqualTo(9);
+			}
+			if (obj.get("dice").equals(5)) {
+				assertThat(position).isEqualTo(10);
+			}
+			if (obj.get("dice").equals(6)) {
+				assertThat(position).isEqualTo(12);
+			}
+
+		}
+	}
 }
