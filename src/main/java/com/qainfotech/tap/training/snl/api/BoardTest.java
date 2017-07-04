@@ -153,7 +153,8 @@ public class BoardTest {
 		}
 
 	}
-		@Test
+
+	@Test
 	public void ladder_steps() throws FileNotFoundException, UnsupportedEncodingException, IOException,
 			PlayerExistsException, GameInProgressException, MaxPlayersReachedExeption, InvalidTurnException {
 		board = new Board();
@@ -164,6 +165,12 @@ public class BoardTest {
 		int c = player.length();
 		JSONObject objPlayer;
 
+		/*
+		 * ladder is fixed at position 1,2,3,4,5,6 in BoardModel.java
+		 * 
+		 * 
+		 * 
+		 */
 		for (int i = 0; i < player.length(); i++) {
 			player = board.getData().getJSONArray("players");
 			objPlayer = player.getJSONObject(i);
@@ -172,7 +179,7 @@ public class BoardTest {
 			JSONObject obj = board.rollDice(uuid);
 
 			int dice = (int) obj.get("dice");
-			System.out.println("dice is="+dice);
+			System.out.println("dice is=" + dice);
 
 			int position = (int) objPlayer.get("position");
 			if (obj.get("dice").equals(1)) {
@@ -196,4 +203,54 @@ public class BoardTest {
 
 		}
 	}
+
+	@Test
+	public void snake_steps() throws FileNotFoundException, UnsupportedEncodingException, IOException,
+			PlayerExistsException, GameInProgressException, MaxPlayersReachedExeption, InvalidTurnException {
+		board = new Board();
+		/*
+		 * only one player is registered to check the snake steps The position
+		 * of "user 1" is set at 54 in "BoardModel.java"
+		 */
+		board.registerPlayer("User 1");
+		UUID uuid = null;
+		JSONArray player = new JSONArray();
+		player = board.getData().getJSONArray("players");
+		int c = player.length();
+		JSONObject objPlayer;
+
+		for (int i = 0; i < player.length(); i++) {
+			player = board.getData().getJSONArray("players");
+			objPlayer = player.getJSONObject(i);
+			uuid = (UUID) objPlayer.get("uuid");
+
+			JSONObject obj = board.rollDice(uuid);
+
+			int dice = (int) obj.get("dice");
+			System.out.println("dice is=" + dice);
+
+			int position = (int) objPlayer.get("position");
+			if (obj.get("dice").equals(1)) {
+				assertThat(position).isEqualTo(13);
+			}
+			if (obj.get("dice").equals(2)) {
+				assertThat(position).isEqualTo(4);
+			}
+			if (obj.get("dice").equals(3)) {
+				assertThat(position).isEqualTo(5);
+			}
+			if (obj.get("dice").equals(4)) {
+				assertThat(position).isEqualTo(6);
+			}
+			if (obj.get("dice").equals(5)) {
+				assertThat(position).isEqualTo(8);
+			}
+			if (obj.get("dice").equals(6)) {
+				assertThat(position).isEqualTo(9);
+			}
+
+		}
+
+	}
+
 }
